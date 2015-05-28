@@ -35,7 +35,6 @@ public class LayerService extends Service {
             placeView();
         }
 
-
         // onStartCommandの戻り値
         // http://yuki312.blogspot.jp/2012/07/androidserviceonstartcommand.html
         return START_STICKY;

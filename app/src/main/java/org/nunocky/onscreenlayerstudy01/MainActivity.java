@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.button5:
                     // CENTER
                     gravity = Gravity.CENTER;
+                    // 動作確認用
+                    // stopService(new Intent(MainActivity.this, LayerService.class));
                     break;
                 default:
                     break;
