@@ -1,5 +1,7 @@
 package org.nunocky.onscreenlayerstudy01;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.button5:
                     // CENTER
                     gravity = Gravity.CENTER;
-                    // 動作確認用
-                    // stopService(new Intent(MainActivity.this, LayerService.class));
                     break;
                 default:
                     break;
@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if (isMyServiceRunning(LayerService.class))
+                stopService(new Intent(MainActivity.this, LayerService.class));
+            else
+                startService(new Intent(MainActivity.this, LayerService.class));
             return true;
         }
 
@@ -94,5 +98,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startService(new Intent(this, LayerService.class));
+    }
+
+    //
+
+    /**
+     * サービスが稼働中か否か
+     * -> http://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
+     *
+     * @param serviceClass 確認したいサービスのクラス
+     * @return 稼働中なら true
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
